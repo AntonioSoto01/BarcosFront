@@ -7,6 +7,7 @@ export class Jugador {
       public nombre: string,
       public ver: boolean,
       public tablero: Casilla[],
+      public filas: Casilla[][],
       public barcos: Barco[],
       public barcoshundidos: number
     ) {}

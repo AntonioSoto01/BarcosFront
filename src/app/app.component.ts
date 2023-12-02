@@ -13,7 +13,7 @@ import { Casilla } from './casilla';
 export class AppComponent implements OnInit {
   jugadores: Jugador[] = [];
   resultadoTurno: ResultadoTurno | null = null;
-  filas: Casilla[][] = [];
+
   turno:String="jugador";
   constructor(private juegoService: JuegoService) {}
   ngOnInit(): void {
@@ -25,49 +25,65 @@ export class AppComponent implements OnInit {
       for (const jugador of this.jugadores) {
         this.organizarCasillasEnFilasYColumnas(jugador);
       }
+      this.turno = this.jugadores[0].nombre;
     });
 
   }
   organizarCasillasEnFilasYColumnas(jugador: Jugador): void {
-    this.filas = [];
-  
+    jugador.filas = [];
     for (const casilla of jugador.tablero) {
       const fila = casilla.y;
       const columna = casilla.x;
   
-      if (!this.filas[fila]) {
-        this.filas[fila] = [];
+      if (!jugador.filas[fila]) {
+        jugador.filas[fila] = [];
       }
       
-      this.filas[fila][columna] = casilla;
+      jugador.filas[fila][columna] = casilla;
     }
   }
+  
   
     
   realizarTurnoMaquina(): void {
     this.juegoService.realizarTurnoMaquina().subscribe(resultado => {
-      this.resultadoTurno = resultado;
-      // Lógica adicional para manejar el resultado del turno
-    });
-  }
-
-  realizarTurnoJugador(casilla: Casilla,jugador:Jugador): void {
-    this.juegoService.realizarTurnoJugador(casilla).subscribe(resultado => {
-      this.turno = resultado.nombreJugador;
-      this.actualizarCasillaDisparada(resultado.casillaDisparada, casilla.id);
-
+      const casillaDisparada: Casilla = resultado.casillaDisparada;
+      for (const jugador of this.jugadores) {
+        if (jugador.nombre === 'maquina') {
+          for (const fila of jugador.filas) {
+            for (const casilla of fila) {
+//console.log(casilla.id+" "+casillaDisparada.id);
+              if (casilla.id === casillaDisparada.id) {
+                this.procesarResultado(resultado, casilla);
+                return; 
+              }
+            }
+          }
+        }
+      }
     });
   }
   
-  private actualizarCasillaDisparada(valor: Casilla, casillaId: number): void {
 
-    for (const fila of this.filas) {
-      let casilla = fila.find(c => c.id === casillaId);
-      if (casilla) {
-        casilla = valor;
-        break;
+  realizarTurnoJugador(casilla: Casilla, jugador: Jugador): void {
+    this.juegoService.realizarTurnoJugador(casilla).subscribe(resultado => {
+      this.procesarResultado(resultado,casilla);
+    });
+  }
+  procesarResultado(resultado:ResultadoTurno,casilla: Casilla){
+    console.log(casilla.id);
+    this.turno = resultado.nombreJugador;
+      this.actualizarCasillaDisparada(casilla);
+      if (this.turno === 'maquina') {
+        this.realizarTurnoMaquina(); 
       }
-    }
+
+
+
+  }
+  private actualizarCasillaDisparada(casilla: Casilla) {
+    casilla.disparado = true;
+    casilla.cadena = "●";
   }
   
   getLetra(indice:number): String {

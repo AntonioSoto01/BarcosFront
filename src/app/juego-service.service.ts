@@ -10,7 +10,7 @@ import { Casilla } from './casilla';
   providedIn: 'root'
 })
 export class JuegoService {
-  private apiUrl = 'http://localhost:8081/api/juego'; 
+  private apiUrl = 'http://localhost:8080/api/juego'; 
 
   constructor(private http: HttpClient) { }
 
