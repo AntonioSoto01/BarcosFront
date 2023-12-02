@@ -73,7 +73,7 @@ export class AppComponent implements OnInit {
   procesarResultado(resultado:ResultadoTurno,casilla: Casilla){
     console.log(casilla.id);
     this.turno = resultado.nombreJugador;
-      this.actualizarCasillaDisparada(casilla);
+      this.actualizarCasillaDisparada(resultado,casilla);
       if (this.turno === 'maquina') {
         this.realizarTurnoMaquina(); 
       }
@@ -81,9 +81,29 @@ export class AppComponent implements OnInit {
 
 
   }
-  private actualizarCasillaDisparada(casilla: Casilla) {
+  private actualizarCasillaDisparada(resultado:ResultadoTurno ,casilla: Casilla) {
     casilla.disparado = true;
+    if (resultado.resultadoDisparo === 'hundido') {
+      if (resultado.resultadoDisparo === 'hundido') {
+        const barcoId = casilla.barco?.id;
+        if (typeof barcoId === 'number') {
+          this.hundirBarco(barcoId);
+        }
+        
+      }
+    }
     casilla.cadena = "●";
+  }
+  private hundirBarco(barcoId: number) {
+    for (const jugador of this.jugadores) {
+      for (const fila of jugador.filas) {
+        for (const casilla of fila) {
+          if (casilla.barco && casilla.barco.id === barcoId) {
+            casilla.hundido = true;
+          }
+        }
+      }
+    }
   }
   
   getLetra(indice:number): String {

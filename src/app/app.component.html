@@ -17,8 +17,10 @@
         <div class="col-1 p-3 text-center border square2">{{ i + 1 }}</div>
         <div *ngFor="let casilla of fila; let j = index" class="col-1 p-3 text-center border square"
           (click)="(turno === jugador.nombre && jugador.nombre !== 'maquina') ? realizarTurnoJugador(casilla, jugador) : null"
-          [ngClass]="{'barco': (jugador.nombre === 'maquina' || casilla.disparado) && casilla.barco !== null}"
-          [ngClass]="{'hundido':  casilla.hundido == true}">
+          [ngClass]="{
+            'barco': (jugador.nombre === 'maquina' || casilla.disparado) && casilla.barco !== null,
+            'hundido': casilla.hundido === true
+          }">
           {{ casilla.disparado ? '●' : '' }}
         </div>
       </div>
