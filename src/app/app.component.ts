@@ -4,6 +4,7 @@ import { Jugador1 } from './jugador1';
 import { ResultadoTurno } from './resultado-turno';
 import { JuegoService } from './juego-service.service';
 import { Casilla } from './casilla';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -14,21 +15,39 @@ import { Casilla } from './casilla';
 export class AppComponent implements OnInit {
   jugadores: Jugador[] = [];
   resultadoTurno: ResultadoTurno | null = null;
-
   turno: String = "";
-  constructor(private juegoService: JuegoService) {}
+  mostrarBoton: boolean = false;
+  constructor(private juegoService: JuegoService) { }
   ngOnInit(): void {
+    this.cargarJugadores();
+  }
+
+  cargarJugadores(): void {
+    this.juegoService.cargarJugadores().subscribe((jugadores) => {
+      this.mostrarJuego(jugadores);
+      if (this.jugadores.length === 0) {
+        this.mostrarBoton = true;
+      }
+    }
+    );
   }
 
   iniciarJuego(): void {
-    this.juegoService.iniciarJuego().subscribe(jugadores => {
-      this.jugadores = jugadores;
+    this.juegoService.iniciarJuego().subscribe(jugadores => {      this.mostrarJuego(jugadores);})
+  }
+  mostrarJuego(jugadores: Jugador[]) {
+    this.jugadores = jugadores;
+    if (this.jugadores.length === 0) {
+      this.mostrarBoton = true;
+      return;
+    } else {
+      ;
       for (const jugador of this.jugadores) {
         this.organizarCasillasEnFilasYColumnas(jugador);
       }
+      console.log(this.jugadores.length)
       this.turno = this.jugadores[0].nombre;
-    });
-
+    }
   }
   organizarCasillasEnFilasYColumnas(jugador: Jugador): void {
     jugador.filas = [];
@@ -54,7 +73,7 @@ export class AppComponent implements OnInit {
           for (const fila of jugador.filas) {
             for (const casilla of fila) {
               if (casilla.id === casillaDisparada.id) {
-                this.procesarResultado(resultado, casilla);
+                this.procesarResultado(resultado, casilla, jugador);
                 return;
               }
             }
@@ -67,19 +86,29 @@ export class AppComponent implements OnInit {
 
   realizarTurnoJugador(casilla: Casilla, jugador: Jugador): void {
     this.juegoService.realizarTurnoJugador(casilla).subscribe(resultado => {
-      this.procesarResultado(resultado, casilla);
+      this.procesarResultado(resultado, casilla, jugador);
     });
   }
-  procesarResultado(resultado: ResultadoTurno, casilla: Casilla) {
+  procesarResultado(resultado: ResultadoTurno, casilla: Casilla, jugador: Jugador) {
     console.log(casilla.id);
     this.turno = resultado.nombreJugador;
     this.actualizarCasillaDisparada(resultado, casilla);
-    if (this.turno === 'maquina') {
-      this.realizarTurnoMaquina();
+
+    if (resultado.terminar) {
+      this.terminar(resultado, jugador);
+
+    } else {
+      // Si el juego no ha terminado, continua con los turnos
+      if (this.turno === 'maquina') {
+        this.realizarTurnoMaquina();
+      }
+      if (this.turno === 'maquina') {
+        this.realizarTurnoMaquina();
+      }
+
+
+
     }
-
-
-
   }
   private actualizarCasillaDisparada(resultado: ResultadoTurno, casilla: Casilla) {
     casilla.disparado = true;
@@ -129,5 +158,12 @@ export class AppComponent implements OnInit {
 
   esTurnoDelJugador(jugador: Jugador | Jugador1): boolean {
     return this.turno === jugador.nombre;
+  }
+  terminar(resultado: ResultadoTurno, jugador: Jugador) {
+    if (this.esJugador1(jugador) && this.turno === jugador.nombre) {
+      Swal.fire("¡Juego Terminado!", "¡Has perdido el juego!", "error");
+    } else {
+      Swal.fire("¡Juego Terminado!", "¡Has ganado el juego!", "success");
+    }
   }
 }

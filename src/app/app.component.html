@@ -1,14 +1,16 @@
-<button (click)="iniciarJuego()">Iniciar Juego</button>
+<div *ngIf="mostrarBoton">
+  <button (click)="iniciarJuego()">Iniciar Juego</button>
+</div>
 <div class="container-fluid d-flex flex-row justify-content-center mt-5 flex-wrap">
   <div *ngFor="let jugador of jugadores.slice().reverse()" class="col-lg-6">
     <div class="container p-4 bg-light rounded">
       <h3 class="text-center mb-4">Tablero de {{ jugador.nombre }}</h3>
-      <div class="text-center mt-2" [id]="'mensajeTurno' + jugador.id" 
+      <div class="text-center mt-2" [id]="'mensajeTurno' + jugador.id"
         [ngClass]="{'mensaje-jugador': esTurnoDelJugador(jugador)&& !esJugador1(jugador), 'mensaje-maquina': esTurnoDelJugador(jugador)&& esJugador1(jugador)}">
         <div [innerHTML]="obtenerMensajeTurno(jugador)"></div>
       </div>
       <div class="row">
-        <div class="col-1"></div> 
+        <div class="col-1"></div>
         <ng-container *ngFor="let letra of jugador.filas[0]; let i = index">
           <div class="col-1 p-3 text-center border square2">{{ getLetra(i) }}</div>
         </ng-container>

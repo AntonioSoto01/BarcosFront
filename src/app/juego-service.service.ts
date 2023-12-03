@@ -11,13 +11,15 @@ import { Casilla } from './casilla';
 })
 export class JuegoService {
   private apiUrl = 'http://localhost:8080/api/juego'; 
-
+  private apiUrlSimple = 'http://localhost:8080'; 
   constructor(private http: HttpClient) { }
 
   iniciarJuego(): Observable<Jugador[]> {
     return this.http.get<Jugador[]>(`${this.apiUrl}/iniciar`);
   }
-
+  cargarJugadores(): Observable<Jugador[]> {
+    return this.http.get<Jugador[]>(`${this.apiUrlSimple}/jugadores`);
+  }
   realizarTurnoMaquina(): Observable<ResultadoTurno> {
     return this.http.post<ResultadoTurno>(`${this.apiUrl}/realizar-turno-maquina`, {});
   }
