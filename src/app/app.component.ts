@@ -98,14 +98,9 @@ export class AppComponent implements OnInit {
       this.terminar(resultado, jugador);
 
     } else {
-      // Si el juego no ha terminado, continua con los turnos
       if (this.turno === 'maquina') {
         this.realizarTurnoMaquina();
       }
-      if (this.turno === 'maquina') {
-        this.realizarTurnoMaquina();
-      }
-
 
 
     }
