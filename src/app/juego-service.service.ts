@@ -4,14 +4,16 @@ import { Observable } from 'rxjs';
 import { Jugador } from './jugador';
 import { ResultadoTurno } from './resultado-turno';
 import { Casilla } from './casilla';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class JuegoService {
-  private apiUrl = 'http://localhost:8080/api/juego'; 
-  private apiUrlSimple = 'http://localhost:8080'; 
+  private apiUrl = environment.apiUrl; 
+  private apiUrlSimple = environment.apiUrlSimple; 
+
   constructor(private http: HttpClient) { }
 
   iniciarJuego(): Observable<Jugador[]> {
