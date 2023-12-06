@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   resultadoTurno: ResultadoTurno | null = null;
   turno: String = "";
   mostrarBoton: boolean = false;
+  juegoTerminado: boolean = false;
   constructor(private juegoService: JuegoService) { }
   ngOnInit(): void {
     this.cargarJugadores();
@@ -33,7 +34,7 @@ export class AppComponent implements OnInit {
   }
 
   iniciarJuego(): void {
-    this.juegoService.iniciarJuego().subscribe(jugadores => {      this.mostrarJuego(jugadores);})
+    this.juegoService.iniciarJuego().subscribe(jugadores => { this.mostrarJuego(jugadores); })
   }
   mostrarJuego(jugadores: Jugador[]) {
     this.jugadores = jugadores;
@@ -155,6 +156,7 @@ export class AppComponent implements OnInit {
     return this.turno === jugador.nombre;
   }
   terminar(resultado: ResultadoTurno, jugador: Jugador) {
+    this.juegoTerminado = true;
     if (this.esJugador1(jugador) && this.turno === jugador.nombre) {
       Swal.fire("¡Juego Terminado!", "¡Has perdido el juego!", "error");
     } else {
