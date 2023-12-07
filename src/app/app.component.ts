@@ -93,8 +93,23 @@ export class AppComponent implements OnInit {
   procesarResultado(resultado: ResultadoTurno, casilla: Casilla, jugador: Jugador) {
     console.log(casilla.id);
     this.turno = resultado.nombreJugador;
-    this.actualizarCasillaDisparada(resultado, casilla);
+    this.actualizarCasillaDisparada(resultado, casilla,jugador);
 
+
+  }
+  private actualizarCasillaDisparada(resultado: ResultadoTurno, casilla: Casilla,jugador:Jugador) {
+    casilla.disparado = true;
+    if (resultado.resultadoDisparo === 'hundido'||resultado.terminar) {
+
+        const barcoId = casilla.barco?.id;
+        if (typeof barcoId === 'number') {
+          this.hundirBarco(barcoId);
+        }
+    }
+    casilla.cadena = "●";
+    casilla.parpadeo=true;
+    setTimeout(() => {
+    casilla.parpadeo = false;
     if (resultado.terminar) {
       this.terminar(resultado, jugador);
 
@@ -105,19 +120,7 @@ export class AppComponent implements OnInit {
 
 
     }
-  }
-  private actualizarCasillaDisparada(resultado: ResultadoTurno, casilla: Casilla) {
-    casilla.disparado = true;
-    if (resultado.resultadoDisparo === 'hundido') {
-      if (resultado.resultadoDisparo === 'hundido') {
-        const barcoId = casilla.barco?.id;
-        if (typeof barcoId === 'number') {
-          this.hundirBarco(barcoId);
-        }
-
-      }
-    }
-    casilla.cadena = "●";
+    }, 2000);
   }
   private hundirBarco(barcoId: number) {
     for (const jugador of this.jugadores) {

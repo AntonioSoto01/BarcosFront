@@ -21,7 +21,8 @@
         (click)="(!juegoTerminado && esTurnoDelJugador(jugador) && !esJugador1(jugador) ? realizarTurnoJugador(casilla, jugador) : null)"
         [ngClass]="{
             'barco': (esJugador1(jugador) || casilla.disparado) && casilla.barco !== null,
-            'hundido': casilla.hundido === true
+            'hundido': casilla.hundido === true,
+            'parpadeo': casilla.parpadeo
           }">
           {{ casilla.disparado ? '●' : '' }}
         </div>

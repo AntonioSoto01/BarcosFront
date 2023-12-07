@@ -10,6 +10,7 @@ export class  Casilla {
       public hundido:boolean ,
       public puedebarco: boolean,
       public puededisparar: boolean,
-      public cadena: string
+      public cadena: string,
+      public parpadeo: boolean
     ) {}
   }
