@@ -39,7 +39,7 @@
 
   @keyframes parpadeo {
     50% { color: transparent; } 
-    50% { background-color:red; } 
+    50% { background-color:white; } 
 
   }
   

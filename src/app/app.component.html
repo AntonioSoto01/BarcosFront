@@ -18,7 +18,7 @@
       <div *ngFor="let fila of jugador.filas; let i = index" class="row">
         <div class="col-1 p-3 text-center border square2">{{ getLetra(i) }}</div>
         <div *ngFor="let casilla of fila; let j = index" class="col-1 p-3 text-center border square"
-        (click)="(!juegoTerminado && esTurnoDelJugador(jugador) && !esJugador1(jugador) ? realizarTurnoJugador(casilla, jugador) : null)"
+        (click)="(!parpadeo&&!juegoTerminado && esTurnoDelJugador(jugador) && !esJugador1(jugador) ? realizarTurnoJugador(casilla, jugador) : null)"
         [ngClass]="{
             'barco': (esJugador1(jugador) || casilla.disparado) && casilla.barco !== null,
             'hundido': casilla.hundido === true,

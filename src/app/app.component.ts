@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   turno: String = "";
   mostrarBoton: boolean = false;
   juegoTerminado: boolean = false;
+  parpadeo: boolean=false;
   constructor(private juegoService: JuegoService) { }
   ngOnInit(): void {
     this.cargarJugadores();
@@ -108,17 +109,17 @@ export class AppComponent implements OnInit {
     }
     casilla.cadena = "●";
     casilla.parpadeo=true;
+    this.parpadeo=true;
     setTimeout(() => {
     casilla.parpadeo = false;
+    this.parpadeo=false;
     if (resultado.terminar) {
       this.terminar(resultado, jugador);
-
     } else {
-      if (this.turno === 'maquina') {
+      if (this.turno === this.jugadores[1].nombre) {
+        console.log("entra")
         this.realizarTurnoMaquina();
       }
-
-
     }
     }, 2000);
   }
