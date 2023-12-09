@@ -5,6 +5,7 @@ import { ResultadoTurno } from './resultado-turno';
 import { JuegoService } from './juego-service.service';
 import { Casilla } from './casilla';
 import Swal from 'sweetalert2';
+import { Partida } from './partida';
 
 
 @Component({
@@ -13,7 +14,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  jugadores: Jugador[] = [];
+  partida!: Partida;
   resultadoTurno: ResultadoTurno | null = null;
   turno: String = "";
   mostrarBoton: boolean = false;
@@ -21,13 +22,13 @@ export class AppComponent implements OnInit {
   parpadeo: boolean=false;
   constructor(private juegoService: JuegoService) { }
   ngOnInit(): void {
-    this.cargarJugadores();
+    this.iniciarJuego();
   }
 
   cargarJugadores(): void {
-    this.juegoService.cargarJugadores().subscribe((jugadores) => {
-      this.mostrarJuego(jugadores);
-      if (this.jugadores.length === 0) {
+    this.juegoService.cargarJugadores().subscribe((partida) => {
+     //ng this.mostrarJuego(partida);
+      if (!this.partida) {
         this.mostrarBoton = true;
       }
     }
@@ -35,20 +36,18 @@ export class AppComponent implements OnInit {
   }
 
   iniciarJuego(): void {
-    this.juegoService.iniciarJuego().subscribe(jugadores => { this.mostrarJuego(jugadores); })
+    this.juegoService.iniciarJuego().subscribe(partida => { this.mostrarJuego(partida); })
   }
-  mostrarJuego(jugadores: Jugador[]) {
-    this.jugadores = jugadores;
-    if (this.jugadores.length === 0) {
+  mostrarJuego(partida: Partida) {
+    this.partida = partida;
+    if (!this.partida) {
       this.mostrarBoton = true;
       return;
     } else {
-      ;
-      for (const jugador of this.jugadores) {
-        this.organizarCasillasEnFilasYColumnas(jugador);
-      }
-      console.log(this.jugadores.length)
-      this.turno = this.jugadores[0].nombre;
+
+        this.organizarCasillasEnFilasYColumnas(this.partida.jugador1);
+        this.organizarCasillasEnFilasYColumnas(this.partida.jugador2);
+      this.turno = this.partida.turno;
     }
   }
   organizarCasillasEnFilasYColumnas(jugador: Jugador): void {
@@ -68,9 +67,9 @@ export class AppComponent implements OnInit {
 
 
   realizarTurnoMaquina(): void {
-    this.juegoService.realizarTurnoMaquina().subscribe(resultado => {
+    this.juegoService.realizarTurnoMaquina(this.partida.id).subscribe(resultado => {
       const casillaDisparada: Casilla = resultado.casillaDisparada;
-      for (const jugador of this.jugadores) {
+const jugador= this.partida.jugador2
         if ('estado' in jugador) {
           for (const fila of jugador.filas) {
             for (const casilla of fila) {
@@ -80,14 +79,14 @@ export class AppComponent implements OnInit {
               }
             }
           }
-        }
+        
       }
     });
   }
 
 
   realizarTurnoJugador(casilla: Casilla, jugador: Jugador): void {
-    this.juegoService.realizarTurnoJugador(casilla).subscribe(resultado => {
+    this.juegoService.realizarTurnoJugador(casilla,this.partida.id).subscribe(resultado => {
       this.procesarResultado(resultado, casilla, jugador);
     });
   }
@@ -104,7 +103,7 @@ export class AppComponent implements OnInit {
 
         const barcoId = casilla.barco?.id;
         if (typeof barcoId === 'number') {
-          this.hundirBarco(barcoId);
+          this.hundirBarco(barcoId,jugador);
         }
     }
     casilla.cadena = "●";
@@ -116,15 +115,15 @@ export class AppComponent implements OnInit {
     if (resultado.terminar) {
       this.terminar(resultado, jugador);
     } else {
-      if (this.turno === this.jugadores[1].nombre) {
+      if (this.turno === this.partida.jugador2.nombre) {
         console.log("entra")
         this.realizarTurnoMaquina();
       }
     }
     }, 2000);
   }
-  private hundirBarco(barcoId: number) {
-    for (const jugador of this.jugadores) {
+  private hundirBarco(barcoId: number,jugador:Jugador) {
+
       for (const fila of jugador.filas) {
         for (const casilla of fila) {
           if (casilla.barco && casilla.barco.id === barcoId) {
@@ -132,7 +131,6 @@ export class AppComponent implements OnInit {
           }
         }
       }
-    }
   }
 
   getLetra(indice: number): String {
