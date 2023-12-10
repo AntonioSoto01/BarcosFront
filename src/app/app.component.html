@@ -1,7 +1,9 @@
 <div *ngIf="mostrarBoton">
   <button (click)="iniciarJuego()">Iniciar Juego</button>
 </div>
+<div *ngIf="partida">
 <div class="container-fluid d-flex flex-row justify-content-center mt-5 flex-wrap">
+
   <div *ngFor="let jugador of [partida.jugador2, partida.jugador1]" class="col-lg-6">
     <div class="container p-4 bg-light rounded">
       <h3 class="text-center mb-4">Tablero de {{ jugador.nombre }}</h3>
@@ -28,5 +30,6 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
 </div>

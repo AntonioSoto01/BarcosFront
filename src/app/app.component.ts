@@ -14,25 +14,23 @@ import { Partida } from './partida';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  partida!: Partida;
+ partida!: Partida;
   resultadoTurno: ResultadoTurno | null = null;
   turno: String = "";
-  mostrarBoton: boolean = false;
+  mostrarBoton: boolean = true;
   juegoTerminado: boolean = false;
   parpadeo: boolean=false;
   constructor(private juegoService: JuegoService) { }
   ngOnInit(): void {
-    this.iniciarJuego();
+    //this.iniciarJuego();
+    this.cargarPartida()
   }
 
-  cargarJugadores(): void {
-    this.juegoService.cargarJugadores().subscribe((partida) => {
-     //ng this.mostrarJuego(partida);
-      if (!this.partida) {
-        this.mostrarBoton = true;
-      }
-    }
-    );
+  cargarPartida(): void {
+    this.juegoService.cargarPartida().subscribe(partida=>{
+      console.log("partidas "+partida)
+      this.mostrarJuego(partida);
+    })
   }
 
   iniciarJuego(): void {
@@ -40,11 +38,10 @@ export class AppComponent implements OnInit {
   }
   mostrarJuego(partida: Partida) {
     this.partida = partida;
-    if (!this.partida) {
-      this.mostrarBoton = true;
-      return;
-    } else {
+    if (this.partida) {
 
+    
+      this.mostrarBoton = false;
         this.organizarCasillasEnFilasYColumnas(this.partida.jugador1);
         this.organizarCasillasEnFilasYColumnas(this.partida.jugador2);
       this.turno = this.partida.turno;
@@ -79,7 +76,7 @@ const jugador= this.partida.jugador2
               }
             }
           }
-        
+
       }
     });
   }
@@ -159,6 +156,7 @@ const jugador= this.partida.jugador2
   }
   terminar(resultado: ResultadoTurno, jugador: Jugador) {
     this.juegoTerminado = true;
+    this.mostrarBoton=true
     if (this.esJugador1(jugador) && this.turno === jugador.nombre) {
       Swal.fire("¡Juego Terminado!", "¡Has perdido el juego!", "error");
     } else {

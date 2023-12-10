@@ -12,16 +12,16 @@ import { Partida } from './partida';
   providedIn: 'root'
 })
 export class JuegoService {
-  private apiUrl = environment.apiUrl; 
-  private apiUrlSimple = environment.apiUrlSimple; 
+  private apiUrl = environment.apiUrl;
+  private apiUrlSimple = environment.apiUrlSimple;
 
   constructor(private http: HttpClient) { }
 
   iniciarJuego(): Observable<Partida> {
     return this.http.get<Partida>(`${this.apiUrl}/iniciar`);
   }
-  cargarJugadores(): Observable<Jugador[]> {
-    return this.http.get<Jugador[]>(`${this.apiUrlSimple}/jugadores`);
+  cargarPartida(): Observable<Partida> {
+    return this.http.get<Partida>(`${this.apiUrl}/cargar`);
   }
   realizarTurnoMaquina(partidaId: number): Observable<ResultadoTurno> {
     const body = new FormData();
@@ -37,5 +37,5 @@ export class JuegoService {
 
     return this.http.post<ResultadoTurno>(`${this.apiUrl}/realizar-turno-jugador`, body);
   }
-  
+
 }

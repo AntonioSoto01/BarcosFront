@@ -8,6 +8,8 @@ export class Partida {
       public jugador1: Jugador,
       public jugador2: Jugador,
       public turno: String,
+      public ip: String,
+      public terminar:boolean
     ) {}
   }
   
