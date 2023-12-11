@@ -24,8 +24,11 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     //this.iniciarJuego();
     this.cargarPartida()
+    this.obtenerDetallesUsuario()
   }
-
+  obtenerDetallesUsuario(): void {
+  this.juegoService.obtenerUsuario();
+  }
   cargarPartida(): void {
     this.juegoService.cargarPartida().subscribe(partida=>{
       console.log("partidas "+partida)
@@ -40,7 +43,7 @@ export class AppComponent implements OnInit {
     this.partida = partida;
     if (this.partida) {
 
-    
+
       this.mostrarBoton = false;
         this.organizarCasillasEnFilasYColumnas(this.partida.jugador1);
         this.organizarCasillasEnFilasYColumnas(this.partida.jugador2);

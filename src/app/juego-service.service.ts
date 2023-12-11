@@ -37,5 +37,7 @@ export class JuegoService {
 
     return this.http.post<ResultadoTurno>(`${this.apiUrl}/realizar-turno-jugador`, body);
   }
-
+obtenerUsuario(){
+  this.http.get<any>('/user');
+}
 }
