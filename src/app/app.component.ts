@@ -37,7 +37,8 @@ export class AppComponent implements OnInit {
   }
 
   iniciarJuego(): void {
-    this.juegoService.iniciarJuego().subscribe(partida => { this.mostrarJuego(partida); })
+    this.juegoService.iniciarJuego().subscribe(partida => { this.mostrarJuego(partida);
+    this.juegoTerminado=false })
   }
   mostrarJuego(partida: Partida) {
     this.partida = partida;
