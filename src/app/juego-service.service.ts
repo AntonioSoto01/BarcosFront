@@ -12,6 +12,7 @@ import { Partida } from './partida';
   providedIn: 'root'
 })
 export class JuegoService {
+
   private apiUrl = environment.apiUrl;
   private apiUrlSimple = environment.apiUrlSimple;
 
@@ -38,6 +39,9 @@ export class JuegoService {
     return this.http.post<ResultadoTurno>(`${this.apiUrl}/realizar-turno-jugador`, body);
   }
 obtenerUsuario():Observable<any>{
- return  this.http.get<any>('/user');
+ return  this.http.get<any>(`${this.apiUrlSimple}/user`);
+}
+loginGoogle(): Observable<any> {
+  return this.http.get<any>(`${this.apiUrlSimple}/oauth2/authorization/google`);
 }
 }

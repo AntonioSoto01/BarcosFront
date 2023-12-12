@@ -6,6 +6,7 @@ import { JuegoService } from './juego-service.service';
 import { Casilla } from './casilla';
 import Swal from 'sweetalert2';
 import { Partida } from './partida';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -14,6 +15,7 @@ import { Partida } from './partida';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+
  partida!: Partida;
   resultadoTurno: ResultadoTurno | null = null;
   turno: String = "";
@@ -21,11 +23,20 @@ export class AppComponent implements OnInit {
   juegoTerminado: boolean = false;
   parpadeo: boolean=false;
   registrado:boolean=false;
-  constructor(private juegoService: JuegoService) { }
+  constructor(private juegoService: JuegoService, private route: ActivatedRoute) { }
   ngOnInit(): void {
     //this.iniciarJuego();
-    this.cargarPartida()
-    this.obtenerDetallesUsuario()
+    this.cargarPartida();
+
+    // Obtener los parámetros de la URL
+    this.route.queryParams.subscribe(params => {
+      if (params['success']) {
+        this.obtenerUsuario();
+        console.log("success")
+      }
+    });
+  }
+  obtenerUsuario(): void {
     this.juegoService.obtenerUsuario().subscribe(
       (data: any) => {
 
@@ -37,9 +48,6 @@ export class AppComponent implements OnInit {
       }
     );
 
-  }
-  obtenerDetallesUsuario(): void {
-  this.juegoService.obtenerUsuario();
   }
   cargarPartida(): void {
     this.juegoService.cargarPartida().subscribe(partida=>{
@@ -179,4 +187,9 @@ const jugador= this.partida.jugador2
       Swal.fire("¡Juego Terminado!", "¡Has ganado el juego!", "success");
     }
   }
+  loginGoogle() {
+   this.juegoService.loginGoogle().subscribe(resultado => {
+
+  });
+    }
 }
