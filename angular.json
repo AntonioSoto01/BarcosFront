@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "../HundirLaFlotaSpringBoot/target/classes/static",
+            "outputPath": "../BarcosBack/target/classes/static",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [

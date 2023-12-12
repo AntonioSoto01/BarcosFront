@@ -20,11 +20,23 @@ export class AppComponent implements OnInit {
   mostrarBoton: boolean = true;
   juegoTerminado: boolean = false;
   parpadeo: boolean=false;
+  registrado:boolean=false;
   constructor(private juegoService: JuegoService) { }
   ngOnInit(): void {
     //this.iniciarJuego();
     this.cargarPartida()
     this.obtenerDetallesUsuario()
+    this.juegoService.obtenerUsuario().subscribe(
+      (data: any) => {
+
+        this.registrado = true;
+      },
+      error => {
+        console.error('Error fetching user data:', error);
+        this.registrado = false;
+      }
+    );
+
   }
   obtenerDetallesUsuario(): void {
   this.juegoService.obtenerUsuario();
