@@ -6,7 +6,7 @@ import { JuegoService } from './juego-service.service';
 import { Casilla } from './casilla';
 import Swal from 'sweetalert2';
 import { Partida } from './partida';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 
 @Component({
@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   juegoTerminado: boolean = false;
   parpadeo: boolean=false;
   registrado:boolean=false;
-  constructor(private juegoService: JuegoService, private route: ActivatedRoute) { }
+  constructor(private juegoService: JuegoService, private route: ActivatedRoute, private router: Router) { }
   ngOnInit(): void {
     //this.iniciarJuego();
     this.cargarPartida();
@@ -192,4 +192,16 @@ const jugador= this.partida.jugador2
 
   });
     }
+
+  logOut() {
+    this.juegoService.logOut().subscribe(
+      response => {
+        console.log('Logout exitoso');
+      },
+      error => {
+        console.error('Error durante el logout', error);
+        window.location.href = '/';
+      }
+    );
+  }
 }

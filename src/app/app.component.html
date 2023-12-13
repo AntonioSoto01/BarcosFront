@@ -6,10 +6,14 @@
 <!--    With GitHub: <a href="/oauth2/authorization/github">click here</a>-->
   </div>
   <div>
-      With GitHub: <a href="http://localhost:8080/oauth2/authorization/github">click here</a>
+      With Google: <a href="/oauth2/authorization/google">click here</a>
       </div>
 
 </div>
+<div *ngIf="registrado">
+  <button (click)="logOut()">Google</button>
+</div>
+
 <div *ngIf="partida">
   <div class="container-fluid d-flex flex-row justify-content-center mt-5 flex-wrap">
 

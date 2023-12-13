@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {catchError, Observable, throwError} from 'rxjs';
 import { Jugador } from './jugador';
 import { ResultadoTurno } from './resultado-turno';
 import { Casilla } from './casilla';
@@ -44,4 +44,8 @@ obtenerUsuario():Observable<any>{
 loginGoogle(): Observable<any> {
   return this.http.get<any>(`${this.apiUrlSimple}/oauth2/authorization/google`);
 }
+
+  logOut() {
+    return this.http.post('/api/logout', {})
+  }
 }
