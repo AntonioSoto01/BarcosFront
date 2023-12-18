@@ -7,6 +7,7 @@ import { Casilla } from './casilla';
 import Swal from 'sweetalert2';
 import { Partida } from './partida';
 import {ActivatedRoute, Router} from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -15,7 +16,7 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-
+   apiUrlSimple = environment.apiUrlSimple;
  partida!: Partida;
   resultadoTurno: ResultadoTurno | null = null;
   turno: String = "";

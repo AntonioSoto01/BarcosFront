@@ -6,12 +6,14 @@
 <!--    With GitHub: <a href="/oauth2/authorization/github">click here</a>-->
   </div>
   <div>
-      With Google: <a href="/oauth2/authorization/google">click here</a>
+    With Google: <a [href]="apiUrlSimple + '/oauth2/authorization/google'">click here</a>
+    <!-- <button (click)="loginGoogle()">Google</button> -->
+
       </div>
 
 </div>
 <div *ngIf="registrado">
-  <button (click)="logOut()">Google</button>
+  <button (click)="logOut()">cerrar Sesion</button>
 </div>
 
 <div *ngIf="partida">
