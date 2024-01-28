@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: '/api/juego',
-  apiUrlSimple: ''
+  apiUrl: 'https://barcos.meetmap.es/api/juego',
+  apiUrlSimple: 'https://barcos.meetmap.es/'
 };
