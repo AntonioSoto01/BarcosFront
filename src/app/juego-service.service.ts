@@ -68,10 +68,10 @@ export class JuegoService {
   }
 
   getOptionalJtw(): {} {
-    // Llamada a una API protegida que requiere el token JWT
-    var jwt = this.getJwt();
-    if (jwt) {
-      return jwt;
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      return this.getJwt();
     } else {
       return {};
     }
@@ -79,6 +79,7 @@ export class JuegoService {
 
   getJwt() {
     const token = localStorage.getItem('token');
+    console.log('get' + token);
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });

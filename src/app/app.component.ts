@@ -32,7 +32,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     //this.iniciarJuego();
-    this.cargarPartida();
 
     // Obtener los parámetros de la URL
     this.route.queryParams.subscribe((params) => {
@@ -41,9 +40,11 @@ export class AppComponent implements OnInit {
       //   console.log('success');
       // }
       if (params['token']) {
-        this.obtenerUsuario();
         localStorage.setItem('token', params['token']);
-        console.log(params['token']);
+        console.log('set' + params['token']);
+        this.obtenerUsuario();
+      } else {
+        this.cargarPartida();
       }
     });
   }
@@ -52,6 +53,7 @@ export class AppComponent implements OnInit {
     this.juegoService.obtenerUsuario().subscribe(
       (data: any) => {
         this.registrado = true;
+        this.cargarPartida();
       },
       (error) => {
         console.error('Error fetching user data:', error);
@@ -81,6 +83,8 @@ export class AppComponent implements OnInit {
       this.organizarCasillasEnFilasYColumnas(this.partida.jugador1);
       this.organizarCasillasEnFilasYColumnas(this.partida.jugador2);
       this.turno = this.partida.turno;
+    } else {
+      this.mostrarBoton = true;
     }
   }
 
