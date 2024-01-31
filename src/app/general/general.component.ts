@@ -9,6 +9,7 @@ import { Jugador } from '../jugador';
 import { Casilla } from '../casilla';
 import { Jugador1 } from '../jugador1';
 import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-general',
@@ -24,11 +25,13 @@ export class GeneralComponent implements OnInit {
   juegoTerminado: boolean = false;
   parpadeo: boolean = false;
   registrado: boolean = false;
+  error: string | null = null;
 
   constructor(
     private juegoService: JuegoService,
     private route: ActivatedRoute,
     private router: Router,
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +48,11 @@ export class GeneralComponent implements OnInit {
         this.obtenerUsuario();
       } else {
         this.cargarPartida();
+      }
+      this.error = localStorage.getItem('error');
+      if (this.error) {
+        this.toastr.error(this.error);
+        localStorage.removeItem('error');
       }
     });
   }

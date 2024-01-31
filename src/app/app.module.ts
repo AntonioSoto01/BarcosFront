@@ -7,6 +7,7 @@ import { JuegoService } from './juego-service.service';
 import { TokenComponent } from './token/token.component';
 import { GeneralComponent } from './general/general.component';
 import { AppComponent } from './app.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [AppComponent, TokenComponent, GeneralComponent],
@@ -15,6 +16,7 @@ import { AppComponent } from './app.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [JuegoService],
   bootstrap: [AppComponent],

@@ -17,9 +17,13 @@ export class TokenComponent implements OnInit {
     // Recupera el valor del parámetro 'token' de la URL
     this.route.queryParams.subscribe((params) => {
       const token = params['token'];
-
-      localStorage.setItem('token', token);
-
+      const error = params['error'];
+      if (token) {
+        localStorage.setItem('token', token);
+      }
+      if (error) {
+        localStorage.setItem('error', error);
+      }
       this.router.navigate(['/']);
     });
   }
