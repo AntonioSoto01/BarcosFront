@@ -79,7 +79,7 @@ export class JuegoService {
 
   getJwt() {
     const token = localStorage.getItem('token');
-    console.log('get' + token);
+
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
