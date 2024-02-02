@@ -5,11 +5,13 @@ import { ResultadoTurno } from './resultado-turno';
 import { Casilla } from './casilla';
 import { environment } from 'src/environments/environment';
 import { Partida } from './partida';
+import { Jugador } from './jugador';
 
 @Injectable({
   providedIn: 'root',
 })
 export class JuegoService {
+
   private apiUrl = environment.apiUrl;
   private apiUrlSimple = environment.apiUrlSimple;
 
@@ -26,7 +28,9 @@ export class JuegoService {
       headers,
     });
   }
-
+  getJugador(id: number): Observable<Jugador> {
+    return this.http.get<Jugador>(`${this.apiUrlSimple}/jugador/${id}`);
+  }
   realizarTurnoMaquina(partidaId: number): Observable<ResultadoTurno> {
     const body = new FormData();
     body.append('partidaId', partidaId.toString());

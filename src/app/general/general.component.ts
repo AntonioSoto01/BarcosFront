@@ -32,7 +32,7 @@ export class GeneralComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     //this.iniciarJuego();
@@ -173,7 +173,6 @@ export class GeneralComponent implements OnInit {
         this.terminar(resultado, jugador);
       } else {
         if (this.turno === this.partida.jugador2.nombre) {
-          console.log('entra');
           this.realizarTurnoMaquina();
         }
       }
@@ -181,13 +180,15 @@ export class GeneralComponent implements OnInit {
   }
 
   private hundirBarco(barcoId: number, jugador: Jugador) {
-    for (const fila of jugador.filas) {
-      for (const casilla of fila) {
-        if (casilla.barco && casilla.barco.id === barcoId) {
-          casilla.hundido = true;
-        }
+    this.juegoService.getJugador(jugador.id).subscribe((nuevoJugador) => {
+      this.organizarCasillasEnFilasYColumnas(nuevoJugador)
+      if (jugador === this.partida.jugador1) {
+        this.partida.jugador1 = nuevoJugador
+      } else {
+        this.partida.jugador2 = nuevoJugador
       }
-    }
+    });
+
   }
 
   getLetra(indice: number): String {
@@ -225,7 +226,7 @@ export class GeneralComponent implements OnInit {
   }
 
   loginGoogle() {
-    this.juegoService.loginGoogle().subscribe((resultado) => {});
+    this.juegoService.loginGoogle().subscribe((resultado) => { });
   }
 
   logOut() {

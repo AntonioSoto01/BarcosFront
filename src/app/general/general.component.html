@@ -39,7 +39,8 @@
                [ngClass]="{
             'barco': (esJugador1(jugador) || casilla.disparado) && casilla.barco !== null,
             'hundido': casilla.hundido === true,
-            'parpadeo': casilla.parpadeo
+            'parpadeo': casilla.parpadeo,
+             'disparar':!casilla.puededisparar
           }">
             {{ casilla.disparado ? '●' : '' }}
           </div>
