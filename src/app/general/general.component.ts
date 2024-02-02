@@ -32,7 +32,7 @@ export class GeneralComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     //this.iniciarJuego();
@@ -158,10 +158,7 @@ export class GeneralComponent implements OnInit {
   ) {
     casilla.disparado = true;
     if (resultado.resultadoDisparo === 'hundido' || resultado.terminar) {
-      const barcoId = casilla.barco?.id;
-      if (typeof barcoId === 'number') {
-        this.hundirBarco(barcoId, jugador);
-      }
+      this.hundirBarco(jugador);
     }
     casilla.cadena = '●';
     casilla.parpadeo = true;
@@ -179,16 +176,15 @@ export class GeneralComponent implements OnInit {
     }, 2000);
   }
 
-  private hundirBarco(barcoId: number, jugador: Jugador) {
+  private hundirBarco(jugador: Jugador) {
     this.juegoService.getJugador(jugador.id).subscribe((nuevoJugador) => {
-      this.organizarCasillasEnFilasYColumnas(nuevoJugador)
+      this.organizarCasillasEnFilasYColumnas(nuevoJugador);
       if (jugador === this.partida.jugador1) {
-        this.partida.jugador1 = nuevoJugador
+        this.partida.jugador1 = nuevoJugador;
       } else {
-        this.partida.jugador2 = nuevoJugador
+        this.partida.jugador2 = nuevoJugador;
       }
     });
-
   }
 
   getLetra(indice: number): String {
@@ -226,7 +222,7 @@ export class GeneralComponent implements OnInit {
   }
 
   loginGoogle() {
-    this.juegoService.loginGoogle().subscribe((resultado) => { });
+    this.juegoService.loginGoogle().subscribe((resultado) => {});
   }
 
   logOut() {
