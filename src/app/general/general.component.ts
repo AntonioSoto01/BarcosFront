@@ -21,10 +21,10 @@ export class GeneralComponent implements OnInit {
   partida!: Partida;
   resultadoTurno: ResultadoTurno | null = null;
   turno: String = '';
-  mostrarBoton: boolean = true;
+  mostrarBoton: boolean = false;
   juegoTerminado: boolean = false;
   parpadeo: boolean = false;
-  registrado: boolean = false;
+  registrado: boolean = true;
   error: string | null = null;
 
   constructor(
@@ -47,6 +47,7 @@ export class GeneralComponent implements OnInit {
       if (token) {
         this.obtenerUsuario();
       } else {
+        this.registrado = false;
         this.cargarPartida();
       }
       this.error = localStorage.getItem('error');
@@ -71,8 +72,8 @@ export class GeneralComponent implements OnInit {
   }
 
   cargarPartida(): void {
-    this.juegoService.cargarPartida().subscribe((partida) => {
-      console.log('partidas ' + partida);
+    let token = localStorage.getItem('partida');
+    this.juegoService.cargarPartida(token).subscribe((partida) => {
       this.mostrarJuego(partida);
     });
   }
@@ -80,6 +81,9 @@ export class GeneralComponent implements OnInit {
   iniciarJuego(): void {
     this.juegoService.iniciarJuego().subscribe((partida) => {
       this.mostrarJuego(partida);
+      if (partida.tokenPartida) {
+        localStorage.setItem('partida', `${partida.tokenPartida}`);
+      }
       this.juegoTerminado = false;
     });
   }

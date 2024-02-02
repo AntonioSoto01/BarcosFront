@@ -20,9 +20,11 @@ export class JuegoService {
     return this.http.get<Partida>(`${this.apiUrl}/iniciar`, { headers });
   }
 
-  cargarPartida(): Observable<Partida> {
+  cargarPartida(token: any): Observable<Partida> {
     const headers = this.getOptionalJtw();
-    return this.http.get<Partida>(`${this.apiUrl}/cargar`, { headers });
+    return this.http.get<Partida>(`${this.apiUrl}/cargar?token=${token}`, {
+      headers,
+    });
   }
 
   realizarTurnoMaquina(partidaId: number): Observable<ResultadoTurno> {
