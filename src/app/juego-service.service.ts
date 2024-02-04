@@ -11,7 +11,6 @@ import { Jugador } from './jugador';
   providedIn: 'root',
 })
 export class JuegoService {
-
   private apiUrl = environment.apiUrl;
   private apiUrlSimple = environment.apiUrlSimple;
 
@@ -24,13 +23,17 @@ export class JuegoService {
 
   cargarPartida(token: any): Observable<Partida> {
     const headers = this.getOptionalJtw();
-    return this.http.get<Partida>(`${this.apiUrl}/cargar?token=${token}`, {
-      headers,
-    });
+    return this.http.post<Partida>(
+      `${this.apiUrl}/cargar`,
+      { token },
+      { headers },
+    );
   }
+
   getJugador(id: number): Observable<Jugador> {
     return this.http.get<Jugador>(`${this.apiUrlSimple}/jugador/${id}`);
   }
+
   realizarTurnoMaquina(partidaId: number): Observable<ResultadoTurno> {
     const body = new FormData();
     body.append('partidaId', partidaId.toString());
@@ -91,5 +94,13 @@ export class JuegoService {
     });
 
     return headers;
+  }
+
+  cambiarToken(): Observable<any> {
+    const headers = this.getJwt();
+    return this.http.get(`${this.apiUrlSimple}/cambiarToken`, {
+      headers,
+      responseType: 'text',
+    });
   }
 }
