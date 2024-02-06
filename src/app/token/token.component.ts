@@ -24,7 +24,6 @@ export class TokenComponent implements OnInit {
         localStorage.setItem('token', token);
         this.juegoService.cambiarToken().subscribe((nuevoToken) => {
           localStorage.setItem('token', nuevoToken);
-          console.log(localStorage.getItem('token'));
           this.router.navigate(['/']);
         });
       }

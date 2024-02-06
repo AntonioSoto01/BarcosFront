@@ -2,14 +2,7 @@
   <button (click)="iniciarJuego()">Iniciar Juego</button>
 </div>
 <div *ngIf="!registrado">
-  <div>
-    With Github: <a [href]="apiUrlSimple + '/oauth2/authorization/github'">click here</a>
-  </div>
-  <div>
-    With Google: <a [href]="apiUrlSimple + '/oauth2/authorization/google'">click here</a>
-    <!-- <button (click)="loginGoogle()">Google</button> -->
-
-  </div>
+  <a routerLink="/registro">Ir a Registro</a>
 
 </div>
 <div *ngIf="registrado">

@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { ActivatedRoute, Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
-import { Partida } from '../partida';
-import { ResultadoTurno } from '../resultado-turno';
-import { JuegoService } from '../juego-service.service';
-import { Jugador } from '../jugador';
-import { Casilla } from '../casilla';
-import { Jugador1 } from '../jugador1';
+import {ActivatedRoute, Router} from '@angular/router';
+import {environment} from 'src/environments/environment';
+import {Partida} from '../partida';
+import {ResultadoTurno} from '../resultado-turno';
+import {JuegoService} from '../juego-service.service';
+import {Jugador} from '../jugador';
+import {Casilla} from '../casilla';
+import {Jugador1} from '../jugador1';
 import Swal from 'sweetalert2';
-import { ToastrService } from 'ngx-toastr';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-general',
@@ -32,7 +32,8 @@ export class GeneralComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     //this.iniciarJuego();
@@ -222,7 +223,8 @@ export class GeneralComponent implements OnInit {
   }
 
   loginGoogle() {
-    this.juegoService.loginGoogle().subscribe((resultado) => {});
+    this.juegoService.loginGoogle().subscribe((resultado) => {
+    });
   }
 
   logOut() {

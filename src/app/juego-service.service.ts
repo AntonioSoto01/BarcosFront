@@ -6,6 +6,7 @@ import { Casilla } from './casilla';
 import { environment } from 'src/environments/environment';
 import { Partida } from './partida';
 import { Jugador } from './jugador';
+import { Usuario } from './usuario';
 
 @Injectable({
   providedIn: 'root',
@@ -102,5 +103,13 @@ export class JuegoService {
       headers,
       responseType: 'text',
     });
+  }
+
+  registro(usuario: Usuario, contrasena: string): Observable<string> {
+    // Create a payload object containing both usuario and contrasena
+    const payload = { usuario, contrasena };
+
+    // Make an HTTP POST request with the payload as the request body
+    return this.http.post<any>(`${this.apiUrlSimple}/registro`, payload);
   }
 }
