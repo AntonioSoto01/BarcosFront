@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -11,6 +11,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { RegistroComponent } from './registro/registro.component';
 import {FormsModule} from "@angular/forms";
 import { LoginComponent } from './login/login.component';
+import { GlobalErrorHandler } from './global-error-handler';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { LoginComponent } from './login/login.component';
     ToastrModule.forRoot(),
     FormsModule,
   ],
-  providers: [JuegoService],
+  providers: [JuegoService, { provide: ErrorHandler, useClass: GlobalErrorHandler }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

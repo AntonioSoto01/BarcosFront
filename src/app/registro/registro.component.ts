@@ -11,12 +11,13 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./registro.component.css'],
 })
 export class RegistroComponent implements OnInit {
-  ngOnInit() {}
+  ngOnInit() { }
 
   constructor(
     private juegoService: JuegoService,
     private router: Router,
-  ) {}
+    private toastr: ToastrService
+  ) { }
 
   apiUrlSimple = environment.apiUrlSimple;
   usuario: Usuario = new Usuario();
@@ -27,9 +28,8 @@ export class RegistroComponent implements OnInit {
     this.juegoService
       .registro(this.usuario, this.contrasena)
       .subscribe((token: string) => {
-        localStorage.setItem('token', token);
-        this.router.navigate(['/']);
-      });
+        this.router.navigate(['/confimar']);
+      })
   }
 
   redirectToGoogle() {
