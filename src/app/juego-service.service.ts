@@ -106,10 +106,12 @@ export class JuegoService {
   }
 
   registro(usuario: Usuario, contrasena: string): Observable<string> {
-    // Create a payload object containing both usuario and contrasena
     const payload = { usuario, contrasena };
 
-    // Make an HTTP POST request with the payload as the request body
     return this.http.post<any>(`${this.apiUrlSimple}/registro`, payload);
+  }
+
+  login(usuario: Usuario) {
+    return this.http.post<any>(`${this.apiUrlSimple}/login`, usuario);
   }
 }

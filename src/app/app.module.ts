@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { ToastrModule } from 'ngx-toastr';
 import { RegistroComponent } from './registro/registro.component';
 import {FormsModule} from "@angular/forms";
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import {FormsModule} from "@angular/forms";
     TokenComponent,
     GeneralComponent,
     RegistroComponent,
+    LoginComponent,
   ],
   imports: [
     HttpClientModule,
