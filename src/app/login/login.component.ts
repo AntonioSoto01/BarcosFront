@@ -17,13 +17,18 @@ export class LoginComponent {
 
   apiUrlSimple = environment.apiUrlSimple;
   usuario: Usuario = new Usuario();
+  validationErrors: any = {};
 
   login() {
-    console.log('Login usuario');
-    this.juegoService.login(this.usuario).subscribe((token: string) => {
-      localStorage.setItem('token', token);
-      this.router.navigate(['/']);
-    });
+    this.juegoService.login(this.usuario).subscribe(
+      (token: string) => {
+        localStorage.setItem('token', token);
+        this.router.navigate(['/']);
+      },
+      (error) => {
+        this.validationErrors = error;
+      },
+    );
   }
 
   redirectToGoogle() {

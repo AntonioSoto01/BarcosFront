@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
+import { catchError, Observable, throwError } from 'rxjs';
 import { ResultadoTurno } from './resultado-turno';
 import { Casilla } from './casilla';
 import { environment } from 'src/environments/environment';
 import { Partida } from './partida';
 import { Jugador } from './jugador';
 import { Usuario } from './usuario';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +20,10 @@ export class JuegoService {
   private apiUrl = environment.apiUrl;
   private apiUrlSimple = environment.apiUrlSimple;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private toastr: ToastrService,
+  ) {}
 
   iniciarJuego(): Observable<Partida> {
     const headers = this.getOptionalJtw();
@@ -105,13 +113,32 @@ export class JuegoService {
     });
   }
 
-  registro(usuario: Usuario, contrasena: string): Observable<string> {
+  registro(usuario: Usuario, contrasena: string): Observable<any> {
     const payload = { usuario, contrasena };
 
-    return this.http.post<any>(`${this.apiUrlSimple}/registro`, payload);
+    return this.http.post<any>(`${this.apiUrlSimple}/registro`, payload).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 400 && error.error instanceof Object) {
+          return throwError(error.error);
+        } else {
+          this.toastr.error(error.error);
+          return throwError(error.message);
+        }
+      }),
+    );
   }
 
   login(usuario: Usuario) {
-    return this.http.post<any>(`${this.apiUrlSimple}/login`, usuario);
+    return this.http.post<any>(`${this.apiUrlSimple}/login`, usuario).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 400 && error.error instanceof Object) {
+          return throwError(error.error);
+        } else {
+          this.toastr.error('Ocurrió un error al procesar la solicitud.');
+          this.toastr.error(error.error);
+          return throwError(error.message);
+        }
+      }),
+    );
   }
 }

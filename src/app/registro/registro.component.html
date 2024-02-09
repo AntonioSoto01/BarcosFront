@@ -12,27 +12,35 @@
           <input [(ngModel)]="usuario.email" type="email" class="form-control rounded-3" id="floatingInput"
                  placeholder="name@example.com" name="email">
           <label for="floatingInput">Email address</label>
+          <div *ngIf="validationErrors['usuario.email']" class="text-danger">{{ validationErrors['usuario.email'] }}
+          </div>
         </div>
         <div class="form-floating mb-3">
           <input [(ngModel)]="usuario.nombre" class="form-control rounded-3" id="floatingName" placeholder="name"
                  name="nombre">
           <label for="floatingName">Name</label>
+          <div *ngIf="validationErrors['usuario.nombre']" class="text-danger">{{ validationErrors['usuario.nombre'] }}
+          </div>
         </div>
         <div class="form-floating mb-3">
           <input [(ngModel)]="usuario.contrasena" type="password" class="form-control rounded-3" id="floatingPassword"
                  placeholder="Password" name="contrasena">
           <label for="floatingPassword">Password</label>
+          <div *ngIf="validationErrors['usuario.contrasena']"
+               class="text-danger">{{ validationErrors['usuario.contrasena'] }}
+          </div>
         </div>
         <div class="form-floating mb-3">
           <input [(ngModel)]="contrasena" type="password" class="form-control rounded-3" id="confirmPassword"
                  placeholder="Confirm Password" name="confirmPassword">
           <label for="confirmPassword">Confirm Password</label>
+          <div *ngIf="validationErrors.contrasena" class="text-danger">{{ validationErrors.contrasena }}</div>
         </div>
         <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Sign up</button>
         <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
         <hr class="my-4">
         <h2 class="fs-5 fw-bold mb-3">Or use a third-party</h2>
-        <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3" type="submit">
+        <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3" type="button">
           <i class="fa-brands fa-twitter"></i>
           Sign up with Twitter
         </button>

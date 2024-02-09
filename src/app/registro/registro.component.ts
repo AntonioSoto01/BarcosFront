@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Usuario } from '../usuario';
 import { JuegoService } from '../juego-service.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -11,34 +11,36 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./registro.component.css'],
 })
 export class RegistroComponent implements OnInit {
-  ngOnInit() { }
+  ngOnInit() {}
 
   constructor(
     private juegoService: JuegoService,
     private router: Router,
-    private toastr: ToastrService
-  ) { }
+    private toastr: ToastrService,
+  ) {}
 
   apiUrlSimple = environment.apiUrlSimple;
   usuario: Usuario = new Usuario();
   contrasena: string;
 
+  validationErrors: any = {};
+
   registrarUsuario() {
-    console.log('Registrando usuario');
-    this.juegoService
-      .registro(this.usuario, this.contrasena)
-      .subscribe((token: string) => {
-        this.router.navigate(['/confimar']);
-      })
+    this.juegoService.registro(this.usuario, this.contrasena).subscribe(
+      () => {
+        this.router.navigate(['/confirmar']);
+      },
+      (error) => {
+        this.validationErrors = error;
+      },
+    );
   }
 
   redirectToGoogle() {
-    const googleAuthUrl = this.apiUrlSimple + '/oauth2/authorization/google';
-    window.location.href = googleAuthUrl; // Redirect the user to Google OAuth URL
+    window.location.href = this.apiUrlSimple + '/oauth2/authorization/google';
   }
 
   redirectToGitHub() {
-    const githubAuthUrl = this.apiUrlSimple + '/oauth2/authorization/github';
-    window.location.href = githubAuthUrl; // Redirect the user to GitHub OAuth URL
+    window.location.href = this.apiUrlSimple + '/oauth2/authorization/github';
   }
 }

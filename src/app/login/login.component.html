@@ -12,11 +12,16 @@
           <input [(ngModel)]="usuario.email" type="email" class="form-control rounded-3" id="floatingInput"
                  placeholder="name@example.com" name="email">
           <label for="floatingInput">Email address</label>
+          <div *ngIf="validationErrors['email']" class="text-danger">{{ validationErrors['email'] }}
+          </div>
         </div>
         <div class="form-floating mb-3">
           <input [(ngModel)]="usuario.contrasena" type="password" class="form-control rounded-3" id="floatingPassword"
                  placeholder="Password" name="contrasena">
           <label for="floatingPassword">Password</label>
+          <div *ngIf="validationErrors['contrasena']"
+               class="text-danger">{{ validationErrors['contrasena'] }}
+          </div>
         </div>
         <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Sign up</button>
         <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>

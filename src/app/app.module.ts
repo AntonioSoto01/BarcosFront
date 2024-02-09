@@ -12,6 +12,7 @@ import { RegistroComponent } from './registro/registro.component';
 import {FormsModule} from "@angular/forms";
 import { LoginComponent } from './login/login.component';
 import { GlobalErrorHandler } from './global-error-handler';
+import { ConfirmarComponent } from './confirmar/confirmar.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { GlobalErrorHandler } from './global-error-handler';
     GeneralComponent,
     RegistroComponent,
     LoginComponent,
+    ConfirmarComponent,
   ],
   imports: [
     HttpClientModule,
