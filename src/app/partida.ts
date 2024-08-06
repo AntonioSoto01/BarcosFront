@@ -10,5 +10,6 @@ export class Partida {
     public turno: String,
     public tokenPartida: String,
     public terminar: boolean,
-  ) {}
+    public usuarios: any[],
+  ) { }
 }

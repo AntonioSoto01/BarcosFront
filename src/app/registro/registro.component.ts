@@ -31,7 +31,10 @@ export class RegistroComponent implements OnInit {
         this.router.navigate(['/confirmar']);
       },
       (error) => {
-        this.validationErrors = error;
+        if (!(error.error instanceof Object)) {
+          this.toastr.error(error.error);
+        }
+        this.validationErrors = error.error;
       },
     );
   }

@@ -17,26 +17,23 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root',
 })
 export class JuegoService {
-  private apiUrl = environment.apiUrl;
+
+
   private apiUrlSimple = environment.apiUrlSimple;
+  //private apiUrlSimple = '';
 
   constructor(
     private http: HttpClient,
     private toastr: ToastrService,
-  ) {}
-
-  iniciarJuego(): Observable<Partida> {
-    const headers = this.getOptionalJtw();
-    return this.http.get<Partida>(`${this.apiUrl}/iniciar`, { headers });
+  ) {
   }
 
-  cargarPartida(token: any): Observable<Partida> {
-    const headers = this.getOptionalJtw();
-    return this.http.post<Partida>(
-      `${this.apiUrl}/cargar`,
-      { token },
-      { headers },
-    );
+  iniciarJuego(): Observable<Partida> {
+    return this.http.get<Partida>(`${this.apiUrlSimple}/iniciar`);
+  }
+
+  cargarPartida(token: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrlSimple}/cargar`, token);
   }
 
   getJugador(id: number): Observable<Jugador> {
@@ -46,32 +43,31 @@ export class JuegoService {
   realizarTurnoMaquina(partidaId: number): Observable<ResultadoTurno> {
     const body = new FormData();
     body.append('partidaId', partidaId.toString());
-    const headers = this.getOptionalJtw();
+
     return this.http.post<ResultadoTurno>(
-      `${this.apiUrl}/realizar-turno-maquina`,
+      `${this.apiUrlSimple}/realizar-turno-maquina`,
       body,
-      { headers },
     );
   }
 
   realizarTurnoJugador(
     casilla: Casilla,
     partidaId: number,
+    rol: string,
   ): Observable<ResultadoTurno> {
     const body = new FormData();
     body.append('casilla', casilla.cadena);
     body.append('partidaId', partidaId.toString());
-    const headers = this.getOptionalJtw();
+    body.append('rol', rol);
+
     return this.http.post<ResultadoTurno>(
-      `${this.apiUrl}/realizar-turno-jugador`,
+      `${this.apiUrlSimple}/realizar-turno-jugador`,
       body,
-      { headers },
     );
   }
 
   obtenerUsuario(): Observable<any> {
-    const headers = this.getJwt();
-    return this.http.get<any>(`${this.apiUrlSimple}/user`, { headers });
+    return this.http.get<any>(`${this.apiUrlSimple}/user`);
   }
 
   loginGoogle(): Observable<any> {
@@ -80,65 +76,35 @@ export class JuegoService {
     );
   }
 
+  loginGithub(): Observable<any> {
+    return this.http.get<any>(
+      `${this.apiUrlSimple}/oauth2/authorization/github`,
+    );
+  }
+
   logOut() {
     localStorage.removeItem('token');
-    return this.http.post('/api/logout', {});
-  }
-
-  getOptionalJtw(): {} {
-    const token = localStorage.getItem('token');
-
-    if (token) {
-      return this.getJwt();
-    } else {
-      return {};
-    }
-  }
-
-  getJwt() {
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return headers;
-  }
-
-  cambiarToken(): Observable<any> {
-    const headers = this.getJwt();
-    return this.http.get(`${this.apiUrlSimple}/cambiarToken`, {
-      headers,
-      responseType: 'text',
-    });
+    // localStorage.removeItem('partida');
+    return this.http.post(`${this.apiUrlSimple}/logout`, {});
   }
 
   registro(usuario: Usuario, contrasena: string): Observable<any> {
     const payload = { usuario, contrasena };
 
-    return this.http.post<any>(`${this.apiUrlSimple}/registro`, payload).pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 400 && error.error instanceof Object) {
-          return throwError(error.error);
-        } else {
-          this.toastr.error(error.error);
-          return throwError(error.message);
-        }
-      }),
-    );
+    return this.http.post<any>(`${this.apiUrlSimple}/registro`, payload);
   }
 
   login(usuario: Usuario) {
-    return this.http.post<any>(`${this.apiUrlSimple}/login`, usuario).pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 400 && error.error instanceof Object) {
-          return throwError(error.error);
-        } else {
-          this.toastr.error('Ocurrió un error al procesar la solicitud.');
-          this.toastr.error(error.error);
-          return throwError(error.message);
-        }
-      }),
-    );
+    return this.http.post<any>(`${this.apiUrlSimple}/login`, usuario);
   }
+  start2PlayersGame(email: string) {
+    return this.http.post<any>(`${this.apiUrlSimple}/iniciar-juego-2-jugadores`, email);
+  }
+  csrf() {
+    return this.http.get<any>(`${this.apiUrlSimple}/csrf`);
+  }
+  getSubscriptionsFromServer(id: number) {
+    return this.http.get<string[]>(`${this.apiUrlSimple}/subscriptions/${id}`);
+  }
+
 }

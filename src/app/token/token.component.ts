@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JuegoService } from '../juego-service.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-token',
@@ -13,6 +14,7 @@ export class TokenComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private juegoService: JuegoService,
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -21,14 +23,12 @@ export class TokenComponent implements OnInit {
       const token = params['token'];
       const error = params['error'];
       if (token) {
+        // Almacenar el token en el almacenamiento local del navegador
         localStorage.setItem('token', token);
-        this.juegoService.cambiarToken().subscribe((nuevoToken) => {
-          localStorage.setItem('token', nuevoToken);
-          this.router.navigate(['/']);
-        });
+        // Cambiar el token
       }
       if (error) {
-        localStorage.setItem('error', error);
+        this.toastr.error(error);
         this.router.navigate(['/']);
       }
     });
